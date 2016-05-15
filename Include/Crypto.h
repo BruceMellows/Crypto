@@ -67,12 +67,12 @@ public:
 
 	//////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////// Encryption
-	inline std::vector<BYTE> Encrypt(const std::vector<BYTE>& bytes) const
+	inline std::vector<BYTE> Encrypt(const std::vector<BYTE>& bytes, bool endOfStream) const
 	{
 		DWORD encryptedSize = bytes.size();
 		ArrayPtr<BYTE> buffer(new BYTE[encryptedSize]);
 		memcpy_s((BYTE*)buffer, encryptedSize, (const void*)&bytes[0], bytes.size());
-		if(!CryptEncrypt(this->cryptKey, NULL, TRUE, 0, buffer, &encryptedSize, encryptedSize))
+		if(!CryptEncrypt(this->cryptKey, NULL, endOfStream, 0, buffer, &encryptedSize, encryptedSize))
 		{
 			throw TEXT("std::vector<BYTE> Encrypt(const std::vector<BYTE>& bytes) const ... CryptEncrypt");
 		}
@@ -80,12 +80,12 @@ public:
 		return std::vector<BYTE>((BYTE*)buffer, &buffer[encryptedSize]);
 	}
 
-	inline std::vector<BYTE> Decrypt(const std::vector<BYTE>& bytes) const
+	inline std::vector<BYTE> Decrypt(const std::vector<BYTE>& bytes, bool endOfStream) const
 	{
 		DWORD decryptedSize = bytes.size();
 		ArrayPtr<BYTE> buffer(new BYTE[decryptedSize]);
 		memcpy_s((BYTE*)buffer, decryptedSize, (const void*)&bytes[0], bytes.size());
-		if(!CryptDecrypt(this->cryptKey, NULL, TRUE, 0, buffer, &decryptedSize))
+		if(!CryptDecrypt(this->cryptKey, NULL, endOfStream, 0, buffer, &decryptedSize))
 		{
 			throw TEXT("std::vector<BYTE> Decrypt(const std::vector<BYTE>& bytes) const ... CryptDecrypt");
 		}

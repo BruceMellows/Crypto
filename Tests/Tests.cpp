@@ -29,8 +29,8 @@ static void TestGeneratePassword(const Crypto& crypto, const std::string diction
 static void TestEncryptDecrypt(const Crypto& crypto)
 {
 	std::string content("content");
-	auto encrypted = crypto.Encrypt(std::vector<BYTE>(content.begin(), content.end()));
-	auto decrypted = crypto.Decrypt(encrypted);
+	auto encrypted = crypto.Encrypt(std::vector<BYTE>(content.begin(), content.end()), true);
+	auto decrypted = crypto.Decrypt(encrypted, true);
 
 	for (auto index = 0 ; index != content.length() ; ++index)
 	{
@@ -55,4 +55,3 @@ void RunTests()
 
 	TestEncryptDecrypt(crypto);
 }
-
