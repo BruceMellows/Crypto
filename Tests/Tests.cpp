@@ -26,32 +26,36 @@ static void TestGeneratePassword(const Crypto& crypto, const std::string diction
 	}
 }
 
-static void TestEncryptDecrypt(const Crypto& crypto)
+static void TestEncryptDecrypt(const Crypto& cryptoA, const Crypto& cryptoB)
 {
-	std::string content("content");
-	auto encrypted = crypto.Encrypt(std::vector<BYTE>(content.begin(), content.end()), true);
-	auto decrypted = crypto.Decrypt(encrypted, true);
+	std::string content= cryptoA.GeneratePassword(std::string("0123456789abcdefghijklmnopqrstuvABCDEFGHIJKLMNOPQRSTUVWXYZ"), 1024);
+	auto encrypted = cryptoA.Encrypt(std::vector<BYTE>(content.begin(), content.end()), true);
+	auto decrypted = cryptoB.Decrypt(encrypted, true);
+	auto sameCount = 0;
 
 	for (auto index = 0 ; index != content.length() ; ++index)
 	{
-		if (content[index] == encrypted[index])
-		{
-			throw TEXT("Crypto::Encrypt encrypted content error");
-		}
+		sameCount += content[index] == encrypted[index] ? 1 : 0;
 
 		if (content[index] != decrypted[index])
 		{
 			throw TEXT("Crypto::Encrypt decrypted content error");
 		}
 	}
+
+	if (sameCount == content.length())
+	{
+		throw TEXT("Crypto::Encrypt encrypted content error");
+	}
 }
 
 void RunTests()
 {
 	std::string entropy("entropy");
-	Crypto crypto(std::vector<BYTE>(entropy.begin(), entropy.end()));
+	Crypto cryptoA(std::vector<BYTE>(entropy.begin(), entropy.end()));
+	Crypto cryptoB(std::vector<BYTE>(entropy.begin(), entropy.end()));
 
-	TestGeneratePassword(crypto, "0123456789abcdef", 16);
+	TestGeneratePassword(cryptoA, "0123456789abcdef", 16);
 
-	TestEncryptDecrypt(crypto);
+	TestEncryptDecrypt(cryptoA, cryptoB);
 }
