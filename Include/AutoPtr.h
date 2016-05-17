@@ -39,6 +39,12 @@ protected:
 		resource_style_t::AcquireHandle(h, that.h);
 	}
 
+	ManagedResource(ManagedResource&& that) :
+		h(that.h)
+	{
+		this.h = resource_style_t::EmptyHandle();
+	}
+
 	~ManagedResource()
 	{
 		resource_style_t::ReleaseHandle(h);
@@ -143,6 +149,43 @@ private:
 protected:
 	NonCopyable() {}
 	NonCopyable(resource_t r) : Base(r) {}
+};
+
+// construct from this&&
+template <class Base>
+struct Movable : public Base
+{
+	typedef TYPENAME Base::resource_style_t		resource_style_t;
+	typedef TYPENAME resource_style_t::indexed_t	indexed_t;
+	typedef TYPENAME Base::resource_t		resource_t;
+	typedef TYPENAME Base::const_resource_t		const_resource_t;
+	typedef TYPENAME Base::type_t			type_t;
+
+	Movable(Movable&& that) : Base(that)
+	{
+	}
+
+protected:
+	Movable() {}
+	Movable(resource_t r) : Base(r) {}
+};
+
+// CANNOT construct from this&&
+template <class Base>
+struct NonMovable : public Base
+{
+	typedef TYPENAME Base::resource_style_t		resource_style_t;
+	typedef TYPENAME resource_style_t::indexed_t	indexed_t;
+	typedef TYPENAME Base::resource_t		resource_t;
+	typedef TYPENAME Base::const_resource_t		const_resource_t;
+	typedef TYPENAME Base::type_t			type_t;
+
+private:
+	NonMovable(NonMovable&&);
+
+protected:
+	NonMovable() {}
+	NonMovable(resource_t r) : Base(r) {}
 };
 
 // cast to resource_t and const_resource_t
@@ -440,11 +483,11 @@ struct THIS : public BASE                                                \
     THIS&    operator=(T* p) { operatorAssign(p); return *this; }        \
 }
 
-AUTOPTR(HeapPtr, NonCopyable< Arrowable< Castable< ManagedResource< HeapPointer<T> > > > > );
-AUTOPTR(ArrayPtr, NonCopyable< Arrowable< Indexable< Castable< ManagedResource< ArrayPointer<T> > > > > > );
-AUTOPTR(SharedPtr, Copyable< Arrowable< Castable< ManagedResource< SharedResource< HeapPointer<T> > > > > >);
-AUTOPTR(SharedArrayPtr, Copyable< Arrowable< Indexable< Castable< ManagedResource< SharedResource< ArrayPointer<T> > > > > > >);
-AUTOPTR(StackPtr, NonCopyable< Arrowable< Indexable< Castable< ManagedResource< StackPointer<T> > > > > > );
+AUTOPTR(HeapPtr, Movable< NonCopyable< Arrowable< Castable< ManagedResource< HeapPointer<T> > > > > > );
+AUTOPTR(ArrayPtr, Movable< NonCopyable< Arrowable< Indexable< Castable< ManagedResource< ArrayPointer<T> > > > > > > );
+AUTOPTR(SharedPtr, NonMovable< Copyable< Arrowable< Castable< ManagedResource< SharedResource< HeapPointer<T> > > > > > > );
+AUTOPTR(SharedArrayPtr, NonMovable< Copyable< Arrowable< Indexable< Castable< ManagedResource< SharedResource< ArrayPointer<T> > > > > > > > );
+AUTOPTR(StackPtr, NonMovable< NonCopyable< Arrowable< Indexable< Castable< ManagedResource< StackPointer<T> > > > > > > );
 #define RefCountedHeapPtr SharedPtr
 #define RefCountedArrayPtr SharedArrayPtr
 
