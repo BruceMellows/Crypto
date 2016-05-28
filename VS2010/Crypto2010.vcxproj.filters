@@ -21,22 +21,31 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\AutoCryptHash.h">
+    <ClInclude Include="..\Include\AutoCryptHash.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\AutoCryptKey.h">
+    <ClInclude Include="..\Include\AutoCryptKey.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\AutoCryptProvider.h">
+    <ClInclude Include="..\Include\AutoCryptProvider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\AutoHandle.h">
+    <ClInclude Include="..\Include\AutoHandle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\Crypto.h">
+    <ClInclude Include="..\Include\AutoPtr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\AutoPtr.h">
+    <ClInclude Include="..\Include\Crypto.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\Cryptography.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\curve25519_i64.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\EllipticCurve25519.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -47,7 +56,13 @@
     <ClCompile Include="Crypto2010.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Tests\Tests.cpp">
+    <ClCompile Include="..\Tests\Tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="curve25519_i64.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EllipticCurve25519.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

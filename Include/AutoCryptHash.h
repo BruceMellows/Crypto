@@ -19,7 +19,7 @@ struct CryptHashHandle
 typedef AutoHandle<CryptHashHandle> AutoCryptHash;
 
 // ---------------------------------------------------------------------------
-// ------------------------------------------------------- AcquireCryptHashPtr
+// ---------------------------------------------------------- AcquireCryptHash
 inline AutoCryptHash AcquireCryptHash(
 	const AutoCryptProvider& cryptProvider,
 	ALG_ID hashAlg)
