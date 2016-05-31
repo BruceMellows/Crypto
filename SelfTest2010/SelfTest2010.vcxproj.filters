@@ -36,16 +36,13 @@
     <ClInclude Include="..\Include\AutoPtr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\Crypto.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\Include\Cryptography.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Include\EllipticCurve25519.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="curve25519_i64.h">
+    <ClInclude Include="..\Include\Crypto.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -53,10 +50,7 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="curve25519_i64.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EllipticCurve25519.cpp">
+    <ClCompile Include="SelfTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

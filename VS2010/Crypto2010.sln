@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Crypto2010", "Crypto2010.vcxproj", "{6750DE05-6675-4954-9E3A-79D531B22133}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SelfTest2010", "..\SelfTest2010\SelfTest2010.vcxproj", "{D52295A3-4E58-4230-BEFB-48301E52ADDE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -13,6 +15,10 @@ Global
 		{6750DE05-6675-4954-9E3A-79D531B22133}.Debug|Win32.Build.0 = Debug|Win32
 		{6750DE05-6675-4954-9E3A-79D531B22133}.Release|Win32.ActiveCfg = Release|Win32
 		{6750DE05-6675-4954-9E3A-79D531B22133}.Release|Win32.Build.0 = Release|Win32
+		{D52295A3-4E58-4230-BEFB-48301E52ADDE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D52295A3-4E58-4230-BEFB-48301E52ADDE}.Debug|Win32.Build.0 = Debug|Win32
+		{D52295A3-4E58-4230-BEFB-48301E52ADDE}.Release|Win32.ActiveCfg = Release|Win32
+		{D52295A3-4E58-4230-BEFB-48301E52ADDE}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
