@@ -28,7 +28,7 @@ public:
 	AutoHandle(AutoHandle&& that)
 		: handle(this->handle)
 	{
-		this->handle = T::DefaultHandle();
+		that.handle = T::DefaultHandle();
 	}
 
 	~AutoHandle()
