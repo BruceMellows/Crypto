@@ -104,26 +104,29 @@ int _tmain(int argc, _TCHAR* argv[])
 	if (argc > 1)
 	{
 		std::tstring arg1(argv[1]);
+
+		// I made all the commands 7 characters long
 		if (arg1.length() > 7)
 		{
-			std::tstring pipeName(arg1.substr(7)); // MAYBE, MAYBE NOT
+			std::tstring pipeCommand(arg1.substr(0, 7));
+			std::tstring pipeParameter(arg1.substr(7));
 
-			if (arg1.substr(0, 7) == TEXT("thread:"))
+			if (pipeCommand == TEXT("thread:"))
 			{
 				DWORD clientThreadId;
 				DWORD serverThreadId;
-				AutoClosableHandle clientThread(CreateThread(NULL, 0, PipeClientThreadProc, LPVOID(pipeName.c_str()), 0, &clientThreadId));
-				AutoClosableHandle ser4verThread(CreateThread(NULL, 0, PipeServerThreadProc, LPVOID(pipeName.c_str()), 0, &serverThreadId));
+				AutoClosableHandle clientThread(CreateThread(NULL, 0, PipeClientThreadProc, LPVOID(pipeParameter.c_str()), 0, &clientThreadId));
+				AutoClosableHandle ser4verThread(CreateThread(NULL, 0, PipeServerThreadProc, LPVOID(pipeParameter.c_str()), 0, &serverThreadId));
 				WaitForThread(clientThreadId, THREAD_WAIT_SECONDS * 1000);
 				WaitForThread(serverThreadId, THREAD_WAIT_SECONDS * 1000);
 			}
-			else if (arg1.substr(0, 7) == TEXT("server:"))
+			else if (pipeCommand == TEXT("server:"))
 			{
-				return RunServer(pipeName);
+				return RunServer(pipeParameter);
 			}
-			else if (arg1.substr(0, 7) == TEXT("client:"))
+			else if (pipeCommand == TEXT("client:"))
 			{
-				return RunClient(pipeName);
+				return RunClient(pipeParameter);
 			}
 		}
 	}
