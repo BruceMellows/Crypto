@@ -26,11 +26,11 @@ typedef AutoHandle<CryptKeyHandle> AutoCryptKey;
 inline AutoCryptKey AcquireCryptKey(
 	const AutoCryptProvider& cryptProvider,
 	const AutoCryptHash& cryptHash,
-	const std::vector<BYTE>& buffer,
+	const std::vector<BYTE>& sharedKey,
 	ALG_ID keyAlg,
 	int keyLength)
 {
-	if (!CryptHashData(cryptHash, &buffer[0], buffer.size(), 0))
+	if (!CryptHashData(cryptHash, &sharedKey[0], sharedKey.size(), 0))
 	{
 		throw TEXT("CryptHashData(*cryptHash, &buffer[0], buffer.size(), 0)");
 	}

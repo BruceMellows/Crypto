@@ -9,12 +9,13 @@
 #include "AutoCryptProvider.h"
 #include "AutoCryptHash.h"
 #include "AutoCryptKey.h"
+#include "Cryptography.h"
 
 #include <vector>
 
 //////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////// Crypto
-class Crypto
+class Crypto : public Cryptography::RandomSource
 {
 private:
 
@@ -24,24 +25,11 @@ private:
 
 public:
 
-	inline Crypto::Crypto(const std::vector<BYTE>& entropy)
+	inline Crypto::Crypto(const std::vector<BYTE>& sharedKey)
 		: cryptProvider(AcquireCryptProvider())
 		, cryptHash(AcquireCryptHash(cryptProvider, CALG_MD5))
-		, cryptKey(AcquireCryptKey(cryptProvider, cryptHash, entropy, CALG_RC4, 0x00800000))
+		, cryptKey(AcquireCryptKey(cryptProvider, cryptHash, sharedKey, CALG_RC4, 0x00800000))
 	{
-	}
-
-	//////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////// Random
-	inline std::vector<BYTE> GenRandom(DWORD length) const
-	{
-		std::vector<BYTE> result(length);
-		if (!CryptGenRandom(this->cryptProvider, length, &result[0]))
-		{
-			throw TEXT("std::vector<BYTE> Crypto::GenRandom(DWORD length) const ... CryptGenRandom");
-		}
-
-		return result;
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -52,7 +40,7 @@ public:
 		buffer.reserve(len);
 		while (buffer.size() < len)
 		{
-			auto bytes = GenRandom(len - buffer.size());
+			auto bytes = GenRandom(this->cryptProvider, len - buffer.size());
 			for (auto iter = bytes.begin() ; iter != bytes.end() ; ++iter)
 			{
 				if (*iter < dictionary.length())
@@ -91,5 +79,12 @@ public:
 		}
 
 		return buffer;
+	}
+
+private:
+	/*override*/ void randomsource_GetBytes(unsigned char* dest, unsigned int count) const
+	{
+		auto buffer = GenRandom(this->cryptProvider, count);
+		std::copy(buffer.begin(), buffer.end(), dest);
 	}
 };

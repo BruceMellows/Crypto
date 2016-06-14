@@ -7,7 +7,7 @@
 #pragma once
 
 #include "AutoHandle.h"
-#include "AutoPtr.h"
+#include <vector>
 
 #include <Windows.h>
 
@@ -33,4 +33,17 @@ inline AutoCryptProvider AcquireCryptProvider()
 	}
 
 	return AutoCryptProvider(handle);
+}
+
+// ---------------------------------------------------------------------------
+// -------------------------------------------------------------------- Random
+inline std::vector<unsigned char> GenRandom(const AutoCryptProvider& cryptProvider, DWORD length)
+{
+	std::vector<BYTE> result(length);
+	if (!CryptGenRandom(cryptProvider, length, &result[0]))
+	{
+		throw TEXT("std::vector<unsigned char> GenRandom(AutoCryptProvider& cryptProvider, DWORD length) ... CryptGenRandom");
+	}
+
+	return result;
 }

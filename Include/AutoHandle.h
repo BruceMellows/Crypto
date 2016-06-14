@@ -41,6 +41,13 @@ public:
 		return handle;
 	}
 
+	handle_t Yoink()
+	{
+		auto result = this->handle;
+		this->handle = T::DefaultHandle();
+		return result;
+	}
+
 	bool operator ! () const
 	{
 		return handle == T::DefaultHandle();
