@@ -477,10 +477,10 @@ public:
 template <class T>                                                       \
 struct THIS : public BASE                                                \
 {                                                                        \
-    THIS(T* p =0) : BASE(p)	 { }                                         \
-    T*       GetPtr()        { return GetResource(); }                   \
-    const T* GetPtr() const  { return GetConstResource(); }              \
-    THIS&    operator=(T* p) { operatorAssign(p); return *this; }        \
+	THIS(T* p =0) : BASE(p)	 { }                                         \
+	T*       GetPtr()        { return GetResource(); }                   \
+	const T* GetPtr() const  { return GetConstResource(); }              \
+	THIS&    operator=(T* p) { operatorAssign(p); return *this; }        \
 }
 
 AUTOPTR(HeapPtr, Movable< NonCopyable< Arrowable< Castable< ManagedResource< HeapPointer<T> > > > > > );

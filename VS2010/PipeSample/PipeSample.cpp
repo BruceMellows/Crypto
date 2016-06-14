@@ -17,7 +17,7 @@ static LPCTSTR sampleMessageText = TEXT("*** Hello World from the land of PIPE *
 
 DWORD WINAPI RunClient(const std::tstring& pipeName)
 {
-    std::tcout << "CLIENT: Connecting to pipe " << pipeName << " ..." << std::endl;
+	std::tcout << "CLIENT: Connecting to pipe " << pipeName << " ..." << std::endl;
 	auto rawPipe = BidirectionalPipe::ClientPipe(pipeName);
 
 #if 0
@@ -30,16 +30,16 @@ DWORD WINAPI RunClient(const std::tstring& pipeName)
 #endif
 	EncryptedPipe pipe(rawPipe, sharedKey);
 
-    std::tcout << "CLIENT: Reading data from pipe..." << std::endl;
+	std::tcout << "CLIENT: Reading data from pipe..." << std::endl;
 
-    // The read operation will block until there is data to read
+	// The read operation will block until there is data to read
 	auto buffer = pipe.Read(127 * sizeof(wchar_t));
 
 	// convert the returned buffer to a wstring and report
 	std::wstring text((wchar_t*)(&buffer[0]), buffer.size() / sizeof(wchar_t));
 	std::wstring expected(sampleMessageText);
-    std::tcout << "CLIENT: Number of bytes read: " << buffer.size() << std::endl;
-    std::tcout << "CLIENT: Message: " << text.c_str() << std::endl;
+	std::tcout << "CLIENT: Number of bytes read: " << buffer.size() << std::endl;
+	std::tcout << "CLIENT: Message: " << text.c_str() << std::endl;
 
 	if (expected == text)
 	{
@@ -55,7 +55,7 @@ DWORD WINAPI RunClient(const std::tstring& pipeName)
 
 DWORD WINAPI RunServer(const std::tstring& pipeName)
 {
-    std::tcout << "SERVER: Creating an instance of a named pipe (connected) " << pipeName.c_str() << " ..." << std::endl;
+	std::tcout << "SERVER: Creating an instance of a named pipe (connected) " << pipeName.c_str() << " ..." << std::endl;
 	auto rawPipe = BidirectionalPipe::ServerPipe(pipeName);
 
 #if 0
@@ -68,12 +68,12 @@ DWORD WINAPI RunServer(const std::tstring& pipeName)
 #endif
 	EncryptedPipe pipe(rawPipe, sharedKey);
 
-    std::tcout << "SERVER: Sending data to pipe..." << std::endl;
-    std::tstring data(sampleMessageText);
-    DWORD numBytesWritten = pipe.Write((BYTE*)&data[0], data.length() * sizeof(data[0]));
+	std::tcout << "SERVER: Sending data to pipe..." << std::endl;
+	std::tstring data(sampleMessageText);
+	DWORD numBytesWritten = pipe.Write((BYTE*)&data[0], data.length() * sizeof(data[0]));
 
 	std::tcout << "SERVER: Number of bytes sent: " << numBytesWritten << std::endl;
-    std::tcout << "SERVER: Done." << std::endl;
+	std::tcout << "SERVER: Done." << std::endl;
 
 	return 0;
 }

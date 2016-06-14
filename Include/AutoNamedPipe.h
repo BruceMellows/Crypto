@@ -26,14 +26,14 @@ typedef AutoHandle<NamedPipeHandle> AutoNamedPipe;
 inline AutoNamedPipe CreateNamedPipe(LPCTSTR lpName)
 {
 	auto handle = CreateNamedPipe(
-        lpName,
-        PIPE_ACCESS_DUPLEX,
-        PIPE_TYPE_BYTE,
-        1,
-        0,
-        0,
-        0,
-        NULL);
+		lpName,
+		PIPE_ACCESS_DUPLEX,
+		PIPE_TYPE_BYTE,
+		1,
+		0,
+		0,
+		0,
+		NULL);
 
 	return AutoNamedPipe(handle);
 }
