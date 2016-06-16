@@ -8,6 +8,7 @@
 
 #include <string>
 #include <iostream>
+#include <vector>
 
 #include "Cryptography.h"
 
@@ -22,6 +23,7 @@ namespace EllipticCurve25519 {
 		PublicKey(PublicKey&&);
 
 		std::wstring ToWString() const;
+		static PublicKey FromWString(const std::wstring& publicKeyHex);
 
 	private:
 		PublicKey(const PublicKey&);
@@ -38,6 +40,7 @@ namespace EllipticCurve25519 {
 		SharedKey(SharedKey&&);
 
 		std::wstring ToWString() const;
+		std::vector<unsigned char> ToBinary() const;
 
 	private:
 		SharedKey(const SharedKey&);
@@ -71,7 +74,7 @@ namespace EllipticCurve25519 {
 		inline const PublicKey&	GetPublicKey() const { return this->publicKey; }
 		inline const PrivateKey&	GetPrivateKey() const { return this->privateKey; }
 
-		SharedKey CreateSharedKey(const Keys& that) const;
+		SharedKey CreateSharedKey(const PublicKey& publicKey) const;
 	};
 }
 

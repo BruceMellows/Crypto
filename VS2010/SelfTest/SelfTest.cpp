@@ -91,7 +91,7 @@ static int TestSharedKey25519(
 	auto keysA = EllipticCurve25519::Keys(randomSourceA);
 	auto keysB = EllipticCurve25519::Keys(randomSourceB);
 
-	auto actual = keysA.CreateSharedKey(keysB).ToWString();
+	auto actual = keysA.CreateSharedKey(keysB.GetPublicKey()).ToWString();
 
 	if (expected != actual)
 	{

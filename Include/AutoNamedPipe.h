@@ -56,7 +56,7 @@ inline AutoNamedPipe WaitForNamedPipe(LPCTSTR lpName)
 	return AutoNamedPipe(
 		CreateFile(
 			lpName,
-			GENERIC_READ, // only need read access
+			GENERIC_READ | GENERIC_WRITE,
 			FILE_SHARE_READ | FILE_SHARE_WRITE,
 			NULL,
 			OPEN_EXISTING,

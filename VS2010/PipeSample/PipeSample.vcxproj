@@ -75,6 +75,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Include\AutoClosableHandle.h" />
+    <ClInclude Include="..\..\Include\AutoCriticalSection.h" />
+    <ClInclude Include="..\..\Include\AutoEnterCriticalSection.h" />
     <ClInclude Include="..\..\Include\AutoHandle.h" />
     <ClInclude Include="..\..\Include\AutoLastError.h" />
     <ClInclude Include="..\..\Include\AutoNamedPipe.h" />
