@@ -32,37 +32,8 @@ struct ThreadParams
 
 DWORD WINAPI RunClient(ThreadParams* threadParams)
 {
-	{
-		auto ecs = EnterAutoCriticalSection(threadParams->criticalSection);
-		std::tcout << "CLIENT: Connecting to pipe " << threadParams->pipeName << " ..." << std::endl;
-	}
-
 	auto rawPipe = BidirectionalPipe::ClientPipe(threadParams->pipeName);
-
-	WinCryptography randomSource;
-	EllipticCurve25519::Keys clientKeys(randomSource);
-
-	{
-		auto ecs = EnterAutoCriticalSection(threadParams->criticalSection);
-		std::tcout << "CLIENT: Private Key: " << clientKeys.GetPrivateKey().ToWString() << std::endl;
-		std::tcout << "CLIENT: Public Key: " << clientKeys.GetPublicKey().ToWString() << std::endl;
-	}
-
-	auto clientKey = L"EC25519(" + clientKeys.GetPublicKey().ToWString() +L")";
-	auto clientKeyIter = (BYTE*)&clientKey[0];
-	auto clientKeyLength = clientKey.length() * sizeof(clientKey[0]);
-	auto serverKeyBuffer = rawPipe.Read(clientKeyLength);
-	std::wstring serverKey((wchar_t*)(&serverKeyBuffer[0]), serverKeyBuffer.size() / sizeof(wchar_t));
-	auto serverPublicKey = EllipticCurve25519::PublicKey::FromWString(serverKey.substr(8, serverKey.length() - 9));
-	rawPipe.Write(clientKeyIter, clientKeyLength);
-	auto sharedKey = clientKeys.CreateSharedKey(serverPublicKey);
-
-	{
-		auto ecs = EnterAutoCriticalSection(threadParams->criticalSection);
-		std::tcout << "CLIENT: Shared Key: " << sharedKey.ToWString() << std::endl;
-	}
-
-	EncryptedPipe pipe(rawPipe, sharedKey.ToBinary());
+	EncryptedPipe pipe(rawPipe, false);
 
 	{
 		auto ecs = EnterAutoCriticalSection(threadParams->criticalSection);
@@ -79,7 +50,7 @@ DWORD WINAPI RunClient(ThreadParams* threadParams)
 	{
 		auto ecs = EnterAutoCriticalSection(threadParams->criticalSection);
 		std::tcout << "CLIENT: Number of bytes read: " << buffer.size() << std::endl;
-		std::tcout << "CLIENT: Message: " << text.c_str() << std::endl;
+		std::tcout << "CLIENT: Message: " << text << std::endl;
 	}
 
 	{
@@ -99,44 +70,17 @@ DWORD WINAPI RunClient(ThreadParams* threadParams)
 
 DWORD WINAPI RunServer(ThreadParams* threadParams)
 {
-	{
-		auto ecs = EnterAutoCriticalSection(threadParams->criticalSection);
-		std::tcout << "SERVER: Creating an instance of a named pipe (connected) " << threadParams->pipeName << " ..." << std::endl;
-	}
-
 	auto rawPipe = BidirectionalPipe::ServerPipe(threadParams->pipeName);
+	EncryptedPipe pipe(rawPipe, true);
 
-	WinCryptography randomSource;
-	EllipticCurve25519::Keys serverKeys(randomSource);
-
-	{
-		auto ecs = EnterAutoCriticalSection(threadParams->criticalSection);
-		std::tcout << "SERVER: Private Key: " << serverKeys.GetPrivateKey().ToWString() << std::endl;
-		std::tcout << "SERVER: Public Key: " << serverKeys.GetPublicKey().ToWString() << std::endl;
-	}
-
-	auto serverKey = L"EC25519(" + serverKeys.GetPublicKey().ToWString() +L")";
-	auto serverKeyIter = (BYTE*)&serverKey[0];
-	auto serverKeyLength = serverKey.length() * sizeof(serverKey[0]);
-	rawPipe.Write(serverKeyIter, serverKeyLength);
-	auto clientKeyBuffer = rawPipe.Read(serverKeyLength);
-	std::wstring clientKey((wchar_t*)(&clientKeyBuffer[0]), clientKeyBuffer.size() / sizeof(wchar_t));
-	auto clientPublicKey = EllipticCurve25519::PublicKey::FromWString(clientKey.substr(8, clientKey.length() - 9));
-	auto sharedKey = serverKeys.CreateSharedKey(clientPublicKey);
-
-	{
-		auto ecs = EnterAutoCriticalSection(threadParams->criticalSection);
-		std::tcout << "SERVER: Shared Key: " << sharedKey.ToWString() << std::endl;
-	}
-
-	EncryptedPipe pipe(rawPipe, sharedKey.ToBinary());
+	std::tstring data(sampleMessageText);
 
 	{
 		auto ecs = EnterAutoCriticalSection(threadParams->criticalSection);
 		std::tcout << "SERVER: Sending data to pipe..." << std::endl;
+		std::tcout << "SERVER: Message: " << data << std::endl;
 	}
 
-	std::tstring data(sampleMessageText);
 	DWORD numBytesWritten = pipe.Write((BYTE*)&data[0], data.length() * sizeof(data[0]));
 
 	{

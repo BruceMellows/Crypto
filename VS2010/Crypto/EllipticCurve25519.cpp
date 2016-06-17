@@ -121,7 +121,7 @@ namespace EllipticCurve25519 {
 		return EllipticCurve25519::ToWString(this->pimpl, sizeof(k25519));
 	}
 
-	Keys::Keys(const Cryptography::RandomSource& entropySource) {
+	Keys::Keys(const IRandomSource& entropySource) {
 		entropySource.GetBytes(*(unsigned char**)(&this->privateKey), sizeof(k25519));
 		::keygen25519(*(unsigned char**)(&this->publicKey), 0, *(unsigned char**)(&this->privateKey));
 	}

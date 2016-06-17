@@ -7,9 +7,9 @@
 #pragma once
 
 #include "AutoCryptProvider.h"
-#include "Cryptography.h"
+#include "IRandomSource.h"
 
-class WinCryptography : public Cryptography::RandomSource
+class WinCryptography : public IRandomSource
 {
 	AutoCryptProvider cryptProvider;
 

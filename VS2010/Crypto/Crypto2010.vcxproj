@@ -84,7 +84,6 @@
     <ClInclude Include="..\..\Include\AutoHandle.h" />
     <ClInclude Include="..\..\Include\AutoPtr.h" />
     <ClInclude Include="..\..\Include\Crypto.h" />
-    <ClInclude Include="..\..\Include\Cryptography.h" />
     <ClInclude Include="..\..\Include\EllipticCurve25519.h" />
     <ClInclude Include="..\..\Include\WinCryptography.h" />
     <ClInclude Include="curve25519_i64.h" />

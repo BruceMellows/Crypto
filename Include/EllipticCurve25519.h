@@ -10,7 +10,7 @@
 #include <iostream>
 #include <vector>
 
-#include "Cryptography.h"
+#include "IRandomSource.h"
 
 namespace EllipticCurve25519 {
 	class PublicKey {
@@ -69,7 +69,7 @@ namespace EllipticCurve25519 {
 
 	public:
 
-		Keys(const Cryptography::RandomSource&);
+		Keys(const IRandomSource&);
 
 		inline const PublicKey&	GetPublicKey() const { return this->publicKey; }
 		inline const PrivateKey&	GetPrivateKey() const { return this->privateKey; }

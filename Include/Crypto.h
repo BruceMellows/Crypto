@@ -9,13 +9,13 @@
 #include "AutoCryptProvider.h"
 #include "AutoCryptHash.h"
 #include "AutoCryptKey.h"
-#include "Cryptography.h"
+#include "IRandomSource.h"
 
 #include <vector>
 
 //////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////// Crypto
-class Crypto : public Cryptography::RandomSource
+class Crypto : public IRandomSource
 {
 private:
 

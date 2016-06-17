@@ -6,13 +6,11 @@
 
 #pragma once
 
-namespace Cryptography {
-	class RandomSource {
-	public:
-		inline void GetBytes(unsigned char* dest, unsigned int count) const {
-			this->randomsource_GetBytes(dest, count);
-		}
-	private:
-		virtual void randomsource_GetBytes(unsigned char* dest, unsigned int count) const =0;
-	};
-}
+class IRandomSource {
+public:
+	inline void GetBytes(unsigned char* dest, unsigned int count) const {
+		this->randomsource_GetBytes(dest, count);
+	}
+private:
+	virtual void randomsource_GetBytes(unsigned char* dest, unsigned int count) const =0;
+};

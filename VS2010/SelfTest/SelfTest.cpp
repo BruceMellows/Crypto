@@ -8,7 +8,7 @@
 
 #include "Crypto.h"
 #include "EllipticCurve25519.h"
-#include "Cryptography.h"
+#include "IRandomSource.h"
 
 static int TestGeneratePassword(const Crypto& crypto, const std::string dictionary, unsigned int len)
 {
@@ -59,7 +59,7 @@ static int TestEncryptDecrypt(const Crypto& cryptoA, const Crypto& cryptoB)
 	return 0;
 }
 
-class DudRandomSource : public Cryptography::RandomSource {
+class DudRandomSource : public IRandomSource {
 	unsigned char value;
 public:
 	DudRandomSource(unsigned char value) : value(value) { }
@@ -68,7 +68,7 @@ public:
 	}
 };
 
-static int TestCreateKey25519(const Cryptography::RandomSource& randomSource, const std::wstring& expected)
+static int TestCreateKey25519(const IRandomSource& randomSource, const std::wstring& expected)
 {
 	auto keys = EllipticCurve25519::Keys(randomSource);
 
@@ -84,8 +84,8 @@ static int TestCreateKey25519(const Cryptography::RandomSource& randomSource, co
 }
 
 static int TestSharedKey25519(
-	const Cryptography::RandomSource& randomSourceA,
-	const Cryptography::RandomSource& randomSourceB,
+	const IRandomSource& randomSourceA,
+	const IRandomSource& randomSourceB,
 	const std::wstring& expected)
 {
 	auto keysA = EllipticCurve25519::Keys(randomSourceA);

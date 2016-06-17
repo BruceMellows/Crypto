@@ -8,9 +8,10 @@
 
 #include "tstring.h"
 #include "AutoNamedPipe.h"
+#include "IReaderWriter.h"
 #include <vector>
 
-class BidirectionalPipe
+class BidirectionalPipe : public IReaderWriter
 {
 	std::tstring pipeName;
 	AutoNamedPipe pipeHandle;
@@ -45,36 +46,6 @@ public:
 		return *this;
 	}
 
-	DWORD Write(const BYTE* buffer, DWORD length)
-	{
-		DWORD totalBytesWritten = 0;
-		if (!WriteFile(this->pipeHandle, buffer, length, &totalBytesWritten, NULL))
-		{
-			throw TEXT("BidirectionalPipe::Write(const BYTE* buffer, DWORD length) !WriteFile(this->pipeHandle, begin, length, &totalBytesWritten, NULL)");
-		}
-
-		return totalBytesWritten;
-	}
-
-	std::vector<unsigned char> Read(DWORD length)
-	{
-		// The read operation will block until there is data to read
-		std::vector<unsigned char> result(length, 0);
-		DWORD numBytesRead = 0;
-		if (!ReadFile(
-			this->pipeHandle,
-			&result[0],       // the data from the pipe will be put here
-			length,           // number of bytes allocated
-			&numBytesRead,    // this will store number of bytes actually read
-			NULL))            // not using overlapped IO
-		{
-			throw TEXT("BidirectionalPipe::Read(DWORD length) !ReadFile(this->pipeHandle, &result[0], length, &numBytesRead, NULL)");
-		}
-
-		result.resize(numBytesRead);
-		return result;
-	}
-
 	static BidirectionalPipe ServerPipe(const std::tstring& pipeName)
 	{
 		auto fullPipeName = std::tstring(TEXT("\\\\.\\pipe\\")).append(pipeName);
@@ -97,6 +68,37 @@ public:
 	{
 		auto fullPipeName = std::tstring(TEXT("\\\\.\\pipe\\")).append(pipeName);
 		return BidirectionalPipe(pipeName, WaitForNamedPipe(fullPipeName.c_str()).Yoink());
+	}
+
+private:
+	DWORD readerWriter_Write(const BYTE* buffer, DWORD length)
+	{
+		DWORD totalBytesWritten = 0;
+		if (!WriteFile(this->pipeHandle, buffer, length, &totalBytesWritten, NULL))
+		{
+			throw TEXT("BidirectionalPipe::Write(const BYTE* buffer, DWORD length) !WriteFile(this->pipeHandle, begin, length, &totalBytesWritten, NULL)");
+		}
+
+		return totalBytesWritten;
+	}
+
+	std::vector<unsigned char> readerWriter_Read(DWORD length)
+	{
+		// The read operation will block until there is data to read
+		std::vector<unsigned char> result(length, 0);
+		DWORD numBytesRead = 0;
+		if (!ReadFile(
+			this->pipeHandle,
+			&result[0],       // the data from the pipe will be put here
+			length,           // number of bytes allocated
+			&numBytesRead,    // this will store number of bytes actually read
+			NULL))            // not using overlapped IO
+		{
+			throw TEXT("BidirectionalPipe::Read(DWORD length) !ReadFile(this->pipeHandle, &result[0], length, &numBytesRead, NULL)");
+		}
+
+		result.resize(numBytesRead);
+		return result;
 	}
 
 private:

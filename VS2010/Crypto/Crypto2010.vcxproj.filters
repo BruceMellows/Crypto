@@ -42,9 +42,6 @@
     <ClInclude Include="..\..\Include\EllipticCurve25519.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\Cryptography.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Include\Crypto.h">
       <Filter>Header Files</Filter>
     </ClInclude>
