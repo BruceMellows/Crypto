@@ -10,13 +10,13 @@
 #include "WinCryptography.h"
 #include "KeyExchange.h"
 
-class EncryptedPipe : public IReaderWriter
+class EncryptedReaderWriter : public IReaderWriter
 {
 	IReaderWriter& readerWriter;
 	Crypto crypto;
 
 public:
-	EncryptedPipe(IReaderWriter& readerWriter, bool initiator)
+	EncryptedReaderWriter(IReaderWriter& readerWriter, bool initiator)
 		: readerWriter(readerWriter)
 		, crypto(KeyExchange(readerWriter, initiator))
 	{

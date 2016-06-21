@@ -6,11 +6,11 @@
 
 #include "stdafx.h"
 
-#include "EllipticCurve25519.h"
-#include "curve25519_i64.h"
 #include <algorithm>
 
-#define rangeof(x) (sizeof(x)/sizeof(*(x)))
+#include "EllipticCurve25519.h"
+#include "curve25519_i64.h"
+#include "rangeof.h"
 
 namespace EllipticCurve25519 {
 	const wchar_t hexdigits[] = L"0123456789ABCDEF";

@@ -82,9 +82,10 @@
     <ClInclude Include="..\..\Include\AutoNamedPipe.h" />
     <ClInclude Include="..\..\Include\AutoPtr.h" />
     <ClInclude Include="..\..\Include\BidirectionalPipe.h" />
-    <ClInclude Include="..\..\Include\EncryptedPipe.h" />
+    <ClInclude Include="..\..\Include\EncryptedReaderWriter.h" />
     <ClInclude Include="..\..\Include\IReaderWriter.h" />
     <ClInclude Include="..\..\Include\KeyExchange.h" />
+    <ClInclude Include="..\..\Include\rangeof.h" />
     <ClInclude Include="..\..\Include\tstream.h" />
     <ClInclude Include="..\..\Include\tstring.h" />
     <ClInclude Include="stdafx.h" />
